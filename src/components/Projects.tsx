@@ -9,7 +9,7 @@ const unityProjects = [
     title: 'Tile Trip Puzzle',
     description: 'Puzzle game where players pick tiles from a level layout and match 3 identical ones in a tray to clear the board. Built a tile generation algorithm that guarantees a winnable solution, and a custom in-editor level design tool — draw the layout visually, save to JSON, load at runtime.',
     tech: ['C#', 'Custom Editor Tool', 'JSON', 'ScriptableObjects'],
-    github: 'https://https://github.com/Naathan404/TileTripPuzzle.git.com/nguyendev',
+    github: 'https://github.com/Naathan404/TileTripPuzzle',
     demo: null,
   },
   {
@@ -18,7 +18,7 @@ const unityProjects = [
     title: 'Toast Escape',
     description: 'My first Unity project. This is an endless runner inspired by Zombie Tsunami. Full gameplay loop with object pooling for map generation. First shipped game.',
     tech: ['C#', 'Object Pooling', 'Aseprite', 'ScriptableObjects'],
-    github: 'https://github.https://github.com/Naathan404/Toast-Escape/nguyendev',
+    github: 'https://github.com/Naathan404/Toast-Escape',
     demo: 'https://naathan404.itch.io/toast-escape',
     images: ['/images/toast-escape-1.jpg', '/images/toast-escape-2.png', '/images/toast-escape-3.jpg', '/images/toast-escape-4.jpg', '/images/toast-escape-5.jpg']
   },
@@ -32,7 +32,7 @@ const otherProjects = [
     description: '2D puzzle platformer built in Godot. Player swaps between masked states to interact with the world differently. Designed with a full state machine and hand-crafted level design.',
     role: '🎮 Designed core gameplay and overall game concept.\n🕹️ Built player systems: state machine, movement, and animation.\n🧩 Designed 7/8 levels.\n⚙️ Implemented level mechanics: Ghost Tile, Laser, and Saw.',
     tech: ['GDScript', 'State Machine', 'Level Design', 'Godot 4'],
-    github: 'https://github.com/https://github.com/Naathan404/UITxVNG-Group08-Swap-Masks.git',
+    github: 'https://github.com/Naathan404/UITxVNG-Group08-Swap-Masks',
     demo: 'https://naathan404.itch.io/swap-masks',
     images: ['/images/swap-masks-1.png', '/images/swap-masks-2.png', '/images/swap-masks-3.png', '/images/swap-masks-4.png']
   },
@@ -95,22 +95,25 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
       }}
     >
       <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
-          {[badge, type, ...(wip ? ['WORK-IN-PROGRESS'] : [])].map(b => (
+        {[badge, type, ...(wip ? ['WORK-IN-PROGRESS'] : [])].map((b, index) => {
+          const isWip = b === 'WORK-IN-PROGRESS';
+          return (
             <span
-              key={b}
+              key={`${b}-${index}`} // Dùng cả index để tuyệt đối không bị trùng key
               style={{
-                ...(b === 'WORK-IN-PROGRESS' && {
-                  background: '#fff3cd',
-                  color: '#856404',
-                  border: '1.5px solid #ffc107',
-                }),
-                fontSize: 10, fontWeight: 800,
-                background: '#e8f5d0', color: '#3d6020',
-                border: '1.5px solid #a0c870', borderRadius: 4,
+                fontSize: 10, 
+                fontWeight: 800,
+                borderRadius: 4,
                 padding: '2px 8px',
+                background: isWip ? '#fff3cd' : '#e8f5d0',
+                color: isWip ? '#856404' : '#3d6020',
+                border: isWip ? '1.5px solid #ffc107' : '1.5px solid #a0c870',
               }}
-            >{b}</span>
-          ))}
+            >
+              {b}
+            </span>
+          );
+        })}
       </div>
 
       <h2 style={{ fontSize: 18, fontWeight: 800, color: '#3d2e1a', marginBottom: 8 }}>{title}</h2>
@@ -143,13 +146,16 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
             }}>{t}</span>
           ))}
         </div>
+
         <div style={{ display: 'flex', gap: 8 }}>
-          {[...(github ? [{ label: 'GitHub ↗', href: github }] : []),...(demo ? [{ label: 'Play ↗', href: demo }] : [])].map(({ label, href }) => (
+          {[
+            ...(github ? [{ label: 'GitHub ↗', href: github, id: 'git' }] : []),
+            ...(demo ? [{ label: 'Play ↗', href: demo, id: 'play' }] : [])
+          ].map(({ label, href, id }) => (
             <a
-              key={label}
+              key={id}
               href={href}
               target="_blank"
-              rel="noreferrer"
               style={{
                 fontSize: 11, fontWeight: 800, color: '#3d6020',
                 background: '#e8f5d0', border: '1.5px solid #a0c870',
