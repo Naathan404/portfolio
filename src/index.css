@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Pixelify+Sans:wght@400;600;700&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5efe0;
+  --bg2: #faf5e8;
+  --bg3: #eee4c8;
+  --bg-nav: #5a7a3a;
+  --bg-stats: #d4c49a;
+  --bg-contact: #5a7a3a;
+  --border: #c8a96e;
+  --border-green: #a0c870;
+  --green: #7ab648;
+  --green-dark: #5a8a30;
+  --green-darker: #3d6020;
+  --green-light: #e8f5d0;
+  --text: #3d2e1a;
+  --text2: #7a6040;
+  --text3: #8a7050;
+  --text-nav: #f5ede0;
+  --text-nav2: #c8e6a0;
+  --pixel: 'Pixelify Sans', monospace;
+  --sans: 'Nunito', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
