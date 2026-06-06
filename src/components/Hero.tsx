@@ -34,7 +34,23 @@ export default function Hero() {
             lineHeight: 1, marginBottom: 10,
           }}>
             Nathan<br />
-            <span style={{ color: '#7ab648' }}>Dev.</span>
+            <span style={{ color: '#7ab648' }}>
+              Dev.
+                <img 
+                  src="/images/cats.png" 
+                  alt="Pixel Cat"
+                  style={{
+                    width: '150px', 
+                    height: '150px',
+                    marginLeft: '30px',
+                    marginBottom: '325px', 
+                    objectFit: 'contain',
+                    imageRendering: 'pixelated', 
+                    bottom: '2px', 
+                    position: 'absolute'
+                  }}
+                />
+              </span>
           </h1>
 
           <p style={{ fontSize: 15, color: '#7a6040', marginBottom: 28, fontWeight: 600 }}>
@@ -86,7 +102,6 @@ export default function Hero() {
           maxWidth: '260px',
           margin: '0 auto'
         }}>
-          {/* Khung ảnh chân dung của bạn */}
           <div style={{
             width: '250px',
             height: '250px',
@@ -104,7 +119,7 @@ export default function Hero() {
           </div>
 
           <img 
-            src="/images/chicken.png" // Thay bằng đường dẫn ảnh con gà pixel của bạn
+            src="/images/chicken.png" 
             alt="Stardew Valley Chicken"
             style={{
               position: 'absolute',
@@ -113,7 +128,7 @@ export default function Hero() {
               width: '100px',
               height: '100px',
               objectFit: 'contain',
-              imageRendering: 'pixelated', // Giúp ảnh pixel không bị mờ nhòe khi co giãn
+              imageRendering: 'pixelated', 
               filter: 'drop-shadow(2px 2px 0px rgba(0,0,0,0.15))'
             }}
           />
