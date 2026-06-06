@@ -28,16 +28,16 @@ const otherProjects = [
   {
     badge: 'GODOT 4',
     type: 'TEAM',
-    title: 'Swap Mask',
+    title: 'Swap Masks',
     description: '2D puzzle platformer built in Godot. Player swaps between masked states to interact with the world differently. Designed with a full state machine and hand-crafted level design.',
-    role: '🎮 Designed core gameplay and overall game concept.\n🕹️ Built player systems: state machine, movement, and animation.\n🧩 Designed 7/8 levels.\n⚙️ Implemented level mechanics: Ghost Tile, Laser, and Saw.',
+    role: '\n🎮 Designed core gameplay and overall game concept.\n🕹️ Built player systems: state machine, movement, and animation.\n🧩 Designed 7/8 levels.\n⚙️ Implemented level mechanics: Ghost Tile, Laser, and Saw.',
     tech: ['GDScript', 'State Machine', 'Level Design', 'Godot 4'],
     github: 'https://github.com/Naathan404/UITxVNG-Group08-Swap-Masks',
     demo: 'https://naathan404.itch.io/swap-masks',
     images: ['/images/swap-masks-1.png', '/images/swap-masks-2.png', '/images/swap-masks-3.png', '/images/swap-masks-4.png']
   },
   {
-    badge: 'C++',
+    badge: 'DIRECT X',
     type: 'TEAM',
     wip: true,
     title: 'Super Mario Bros. 3',
