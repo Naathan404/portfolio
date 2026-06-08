@@ -5,12 +5,15 @@ const unityProjects = [
   {
     badge: 'UNITY 2D',
     type: 'SOLO',
-    wip: true,
+    wip: false,
     title: 'Tile Trip Puzzle',
     description: 'Puzzle game where players pick tiles from a level layout and match 3 identical ones in a tray to clear the board. Built a tile generation algorithm that guarantees a winnable solution, and a custom in-editor level design tool — draw the layout visually, save to JSON, load at runtime.',
-    tech: ['C#', 'Custom Editor Tool', 'JSON', 'ScriptableObjects'],
+    tech: ['C#', 'Custom Editor Tool', 'JSON', 'ScriptableObjects', 'DOTween'],
     github: 'https://github.com/Naathan404/TileTripPuzzle',
-    demo: null,
+    demo: 'https://naathan404.itch.io/tile-trip-puzzle',
+    video: 'https://youtube.com/shorts/Esmn-DsElBw',
+    images: ['/images/tile-trip-1.png','/images/tile-trip-2.png','/images/tile-trip-3.png', '/images/tile-trip-4.png', '/images/tile-trip-5.png'],
+    role: '\n🛠️ Built a custom Unity Editor Tool for visual level layout design with JSON-based save/load.\n🧩 Implemented a backward-generation algorithm guaranteeing at least one valid winning path per level.\n✨ Enhanced game feel using DOTween animations and Unity Particle System for match feedback.'
   },
   {
     badge: 'UNITY 2D',
@@ -20,7 +23,22 @@ const unityProjects = [
     tech: ['C#', 'Object Pooling', 'Aseprite', 'ScriptableObjects'],
     github: 'https://github.com/Naathan404/Toast-Escape',
     demo: 'https://naathan404.itch.io/toast-escape',
-    images: ['/images/toast-escape-1.jpg', '/images/toast-escape-2.png', '/images/toast-escape-3.jpg', '/images/toast-escape-4.jpg', '/images/toast-escape-5.jpg']
+    video: 'https://youtu.be/udyNIv3OPvA?si=y1iEBOrNYk1IY2gl',
+    images: ['/images/toast-escape-1.jpg', '/images/toast-escape-2.png', '/images/toast-escape-3.jpg', '/images/toast-escape-4.jpg', '/images/toast-escape-5.jpg'],
+    role: '\n🏔️ Designed a dynamic difficulty system: pre-authored map segments of varying difficulty are selected at runtime based on the player\'s current speed.\n⚙️ Managed continuous map streaming using Object Pooling on map segments, enabling seamless level flow without runtime instantiation overhead.'
+  },
+    {
+    badge: 'UNITY 2D',
+    type: 'TEAM',
+    title: 'High Tail',
+    wip: true,
+    description: 'A challenging 2D platformer set in an ancient world where movement is your greatest weapon.',
+    tech: ['C#', 'FSM', 'Shader', 'Post processing', 'ScriptableObjects'],
+    github: null,
+    demo: null,
+    video: null,
+    images: ['images/high-tail-1.png', 'images/high-tail-2.png', 'images/high-tail-4.png', 'images/high-tail-5.png'],
+    role: '\n🕹️ Built player movement with advanced game-feel techniques: buffer jump, coyote time, and corner correction.\n🍃 Developed custom shaders: Wind Shader for foliage animation and a camera distortion wave shader.\n✨ Implemented particle effects for visual polish.\n📺 Explored post-processing pipeline for visual effects.'
   },
 ]
 
@@ -34,6 +52,7 @@ const otherProjects = [
     tech: ['GDScript', 'State Machine', 'Level Design', 'Godot 4'],
     github: 'https://github.com/Naathan404/UITxVNG-Group08-Swap-Masks',
     demo: 'https://naathan404.itch.io/swap-masks',
+    video: 'https://youtu.be/YAY58Vo1z_0?si=bj7HfBGspmTQk-tf',
     images: ['/images/swap-masks-1.png', '/images/swap-masks-2.png', '/images/swap-masks-3.png', '/images/swap-masks-4.png']
   },
   {
@@ -46,6 +65,7 @@ const otherProjects = [
     tech: ['C++', 'DirectX 10', 'Sprite Animation', 'AABB Collision', 'Game Loop'],
     github: null,
     demo: null,
+    video: null,
     images: ['/images/smb3-1.png', '/images/smb3-2.png', '/images/smb3-5.png', '/images/smb3-4.png', '/images/smb3-3.png']
   },
 ]
@@ -68,12 +88,13 @@ export default function Projects() {
   )
 }
 
-function ProjectCard({ badge, type, wip, title, images, description, role, tech, github, demo }: {
+function ProjectCard({ badge, type, wip, title, images, description, role, tech, video, github, demo }: {
   badge: string; type: string; 
   title: string; 
   description: string; role?: string
   tech: string[]; 
   github: string | null; 
+  video: string | null;
   demo: string | null;
   wip?: boolean,
   images?: string[]
@@ -128,7 +149,7 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
           borderRadius: 6,
         }}>
           <span style={{ fontSize: 11, fontWeight: 800, color: '#3d6020' }}>
-            → MY ROLE: 
+            → {type === 'SOLO' ? 'HIGHLIGHTS:' : 'MY ROLE:'}
           </span>
           <span style={{ fontSize: 12, color: '#5a4030', marginLeft: 6, fontWeight: 600, whiteSpace: 'pre-line' }}>
             {role}
@@ -148,22 +169,26 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
         </div>
 
         <div style={{ display: 'flex', gap: 8 }}>
-          {[
-            ...(github ? [{ label: 'GitHub ↗', href: github, id: 'git' }] : []),
-            ...(demo ? [{ label: 'Play ↗', href: demo, id: 'play' }] : [])
-          ].map(({ label, href, id }) => (
+            {[
+              ...(video ? [{ label: 'Demo ▶', href: video, id: 'video' }] : []),
+              ...(github ? [{ label: 'GitHub ↗', href: github, id: 'git' }] : []),
+              ...(demo ? [{ label: 'Play ↗', href: demo, id: 'play' }] : []),
+            ].map(({ label, href, id }) => (
             <a
               key={id}
               href={href}
               target="_blank"
+              rel="noreferrer"
               style={{
-                fontSize: 11, fontWeight: 800, color: '#3d6020',
-                background: '#e8f5d0', border: '1.5px solid #a0c870',
+                fontSize: 11, fontWeight: 800,
+                color: id === 'video' ? '#c05000' : '#3d6020',
+                background: id === 'video' ? '#fff0e0' : '#e8f5d0',
+                border: id === 'video' ? '1.5px solid #f0a060' : '1.5px solid #a0c870',
                 borderRadius: 6, padding: '6px 14px',
                 transition: 'background 0.15s', whiteSpace: 'nowrap' as const,
               }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#d0ebb0')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#e8f5d0')}
+              onMouseEnter={e => (e.currentTarget.style.background = id === 'video' ? '#ffd9b0' : '#d0ebb0')}
+              onMouseLeave={e => (e.currentTarget.style.background = id === 'video' ? '#fff0e0' : '#e8f5d0')}
             >
               {label}
             </a>
