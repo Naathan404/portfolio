@@ -13,7 +13,7 @@ const unityProjects = [
     github: 'https://github.com/Naathan404/TileTripPuzzle',
     demo: 'https://naathan404.itch.io/tile-trip-puzzle',
     video: 'https://youtube.com/shorts/f0luBTxtHh0?feature=share',
-    images: ['/images/tile-trip-3.png', '/images/tile-trip-0.png', '/images/tile-trip-2.png','/images/tile-trip-4.png', '/images/tile-trip-5.png', '/images/tile-trip-6.png'],
+    images: ['/images/tile-trip-3.png', '/images/tile-trip-0.png', '/images/tile-trip-2.png','/images/tile-trip-5.png', '/images/tile-trip-4.png', '/images/tile-trip-6.png', '/images/tile-trip-7.png'],
     role: '\n🛠️ Built a custom Unity Editor Tool for visual level layout design with JSON-based save/load.\n🧩 Implemented a backward-generation algorithm guaranteeing at least one valid winning path per level.\n✨ Enhanced game feel using DOTween animations and Unity Particle System for match feedback.'
   },
   {
