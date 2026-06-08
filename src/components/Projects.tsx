@@ -1,6 +1,7 @@
+import { useState } from 'react' // ← Import useState để quản lý state đóng/mở hình
 import { SectionLabel } from './SectionLabel'
 
-
+{/* --- DANH SÁCH CÁC DỰ ÁN --- */}
 const unityProjects = [
   {
     badge: 'UNITY 2D',
@@ -27,7 +28,7 @@ const unityProjects = [
     images: ['/images/toast-escape-1.jpg', '/images/toast-escape-2.png', '/images/toast-escape-3.jpg', '/images/toast-escape-4.jpg', '/images/toast-escape-5.jpg'],
     role: '\n🏔️ Designed a dynamic difficulty system: pre-authored map segments of varying difficulty are selected at runtime based on the player\'s current speed.\n⚙️ Managed continuous map streaming using Object Pooling on map segments, enabling seamless level flow without runtime instantiation overhead.'
   },
-    {
+  {
     badge: 'UNITY 2D',
     type: 'TEAM',
     title: 'High Tail',
@@ -70,25 +71,86 @@ const otherProjects = [
   },
 ]
 
+{/* --- PROJECTS--- */}
 export default function Projects() {
+  // Quản lý hình ảnh đang được click chọn để phóng to (null nếu không chọn hình nào)
+  const [selectedImg, setSelectedImg] = useState<string | null>(null);
+
   return (
-    <section id="Projects" style={{ padding: '28px 32px', borderBottom: '2px solid #c8a96e' }}>
+    <section id="Projects" style={{ padding: '28px 32px', borderBottom: '2px solid #c8a96e', position: 'relative' }}>
       {/* Unity Projects */}
       <SectionLabel icon="🎮">Unity Projects</SectionLabel>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
-        {unityProjects.map(p => <ProjectCard key={p.title} {...p} />)}
+        {unityProjects.map(p => (
+          <ProjectCard key={p.title} {...p} onImageClick={setSelectedImg} />
+        ))}
       </div>
 
       {/* Other Projects */}
       <SectionLabel icon="🛠️">Other Projects</SectionLabel>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {otherProjects.map(p => <ProjectCard key={p.title} {...p} />)}
+        {otherProjects.map(p => (
+          <ProjectCard key={p.title} {...p} onImageClick={setSelectedImg} />
+        ))}
       </div>
+
+      {/* --- POPUP MODAL PHÓNG TO HÌNH ẢNH --- */}
+      {selectedImg && (
+        <div 
+          style={{
+            position: 'fixed', top: 0, left: 0,
+            width: '100vw', height: '100vh',
+            backgroundColor: 'rgba(26, 18, 10, 0.85)', 
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            zIndex: 9999, cursor: 'zoom-out',
+            backdropFilter: 'blur(4px)', 
+            animation: 'fadeIn 0.2s ease-out'
+          }}
+          onClick={() => setSelectedImg(null)} // Click ra ngoài pop up để đonngs
+        >
+          {/* Nút đóng góc trên bên phải */}
+          <button 
+            style={{
+              position: 'absolute', top: 20, right: 25,
+              background: '#faf5e8', border: '2px solid #c8a96e',
+              color: '#3d2e1a', borderRadius: '50%',
+              width: 40, height: 40, fontSize: 18, fontWeight: 'bold',
+              cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              transition: 'transform 0.15s'
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+            onClick={() => setSelectedImg(null)}
+          >
+            ✕
+          </button>
+
+          {/* Vùng chứa ảnh phóng to */}
+          <div 
+            style={{ position: 'relative', maxWidth: '85%', maxHeight: '85%' }}
+            onClick={(e) => e.stopPropagation()} // Chống nổi bọt (click vào ảnh ko bị đóng)
+          >
+            <img 
+              src={selectedImg} 
+              alt="Project preview large" 
+              style={{
+                maxWidth: '100%', maxHeight: '85vh',
+                objectFit: 'contain', borderRadius: 8,
+                border: '3px solid #c8a96e',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                backgroundColor: '#faf5e8'
+              }}
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
 
-function ProjectCard({ badge, type, wip, title, images, description, role, tech, video, github, demo }: {
+{/* --- THẺ DỰ ÁN --- */}
+function ProjectCard({ badge, type, wip, title, images, description, role, tech, video, github, demo, onImageClick }: {
   badge: string; type: string; 
   title: string; 
   description: string; role?: string
@@ -97,7 +159,8 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
   video: string | null;
   demo: string | null;
   wip?: boolean,
-  images?: string[]
+  images?: string[];
+  onImageClick: (src: string) => void;
 }) {
   return (
     <div
@@ -120,7 +183,7 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
           const isWip = b === 'WORK-IN-PROGRESS';
           return (
             <span
-              key={`${b}-${index}`} // Dùng cả index để tuyệt đối không bị trùng key
+              key={`${b}-${index}`}
               style={{
                 fontSize: 10, 
                 fontWeight: 800,
@@ -205,9 +268,8 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
             </span>
           )}
         </div>
-
-        
       </div>
+
       {images && images.length > 0 && (
         <div style={{
           display: 'flex', gap: 8, marginTop: 16,
@@ -220,6 +282,8 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
               key={i}
               src={src}
               alt={`${title} screenshot ${i + 1}`}
+              // Thêm sự kiện onClick truyền ngược src lên component cha
+              onClick={() => onImageClick(src)}
               style={{
                 height: 140,
                 borderRadius: 6,
@@ -227,7 +291,7 @@ function ProjectCard({ badge, type, wip, title, images, description, role, tech,
                 objectFit: 'cover',
                 flexShrink: 0,
                 cursor: 'pointer',
-                transition: 'transform 0.2s ease, border-color 0.2s ease', // ← thêm
+                transition: 'transform 0.2s ease, border-color 0.2s ease',
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-4px) scale(1.03)'
