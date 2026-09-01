@@ -6,25 +6,25 @@ type Variant = 'primary' | 'secondary' | 'ghost'
 
 const variantStyles: Record<Variant, CSSProperties> = {
   primary: {
-    background: theme.color.grass,
-    color: '#fff',
-    border: `2px solid ${theme.color.grassDark}`,
+    background: `linear-gradient(180deg, ${theme.color.grass} 0%, ${theme.color.grassDark} 100%)`,
+    color: theme.color.cream,
+    border: `3px solid ${theme.color.grassDarker}`,
   },
   secondary: {
-    background: theme.color.parchment,
+    background: `linear-gradient(180deg, ${theme.color.parchment} 0%, ${theme.color.parchmentDark} 100%)`,
     color: theme.color.ink,
-    border: `2px solid ${theme.color.wood}`,
+    border: `3px solid ${theme.color.woodDark}`,
   },
   ghost: {
-    background: 'transparent',
+    background: `linear-gradient(180deg, ${theme.color.cream} 0%, ${theme.color.parchmentSoft} 100%)`,
     color: theme.color.inkSoft,
-    border: `2px solid ${theme.color.woodLight}`,
+    border: `3px solid ${theme.color.wood}`,
   },
 }
 
-function applyPress(el: HTMLElement, pressed: boolean) {
-  el.style.transform = pressed ? 'translate(2px, 2px)' : 'translate(0, 0)'
-  el.style.boxShadow = pressed ? '0px 0px 0px transparent' : theme.pixelShadow(3)
+function ApplyPress(el: HTMLElement, pressed: boolean) {
+  el.style.transform = pressed ? 'translate(3px, 3px)' : 'translate(0, 0)'
+  el.style.boxShadow = pressed ? `0 0 0 ${theme.color.woodDark}` : theme.pixelShadow(4)
 }
 
 export default function PixelButton({
@@ -43,23 +43,26 @@ export default function PixelButton({
   const shared: CSSProperties = {
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 6,
-    fontFamily: "'Pixelify Sans', monospace",
-    fontSize: 13,
+    justifyContent: 'center',
+    gap: 7,
+    fontFamily: theme.font.pixel,
+    fontSize: 14,
     fontWeight: 700,
-    borderRadius: 6,
+    borderRadius: 0,
     padding: '10px 20px',
-    boxShadow: theme.pixelShadow(3),
-    transition: 'transform 0.08s, box-shadow 0.08s',
+    boxShadow: theme.pixelShadow(4),
+    textShadow: variant === 'primary' ? `1px 1px 0 ${theme.color.grassDarker}` : 'none',
+    transition: 'transform 0.08s, box-shadow 0.08s, filter 0.12s',
     cursor: 'pointer',
+    imageRendering: 'pixelated',
     ...variantStyles[variant],
     ...style,
   }
 
   const handlers = {
-    onMouseDown: (e: MouseEvent<HTMLElement>) => applyPress(e.currentTarget, true),
-    onMouseUp: (e: MouseEvent<HTMLElement>) => applyPress(e.currentTarget, false),
-    onMouseLeave: (e: MouseEvent<HTMLElement>) => applyPress(e.currentTarget, false),
+    onMouseDown: (e: MouseEvent<HTMLElement>) => ApplyPress(e.currentTarget, true),
+    onMouseUp: (e: MouseEvent<HTMLElement>) => ApplyPress(e.currentTarget, false),
+    onMouseLeave: (e: MouseEvent<HTMLElement>) => ApplyPress(e.currentTarget, false),
   }
 
   if (to) {

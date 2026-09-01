@@ -1,79 +1,115 @@
 import PixelButton from './PixelButton'
+import { theme } from '../theme'
 
-const DECO_COLORS = ['#7ab648', '#e8a830', '#c85050', '#5890c8', '#e8a830', '#7ab648', '#5890c8', '#c85050']
+const DECO_TILES = [
+  theme.color.grass,
+  theme.color.crop,
+  theme.color.red,
+  theme.color.blue,
+  theme.color.crop,
+  theme.color.grassDark,
+  theme.color.blue,
+  theme.color.red,
+]
+
+const stats = [
+  { num: '04', label: 'Projects' },
+  { num: '1+', label: 'Year with Unity' },
+  { num: 'C#', label: 'Main language' },
+  { num: 'HCM City', label: 'Based in' },
+]
 
 export default function Hero() {
   return (
-    <div style={{ background: '#eee4c8', padding: '48px 40px 40px', borderBottom: '2px solid #c8a96e', position: 'relative' }}>
-      {/* Pixel deco dots */}
-      <div style={{ position: 'absolute', right: 50, top: 20, display: 'grid', gridTemplateColumns: 'repeat(4, 10px)', gap: 6 }}>
-        {DECO_COLORS.map((color, i) => (
-          <div key={i} style={{ width: 10, height: 10, borderRadius: 2, background: color }} />
+    <section
+      className="pixel-panel"
+      style={{
+        margin: '28px auto 0',
+        maxWidth: 1020,
+        padding: '42px 40px 36px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage:
+            'linear-gradient(90deg, rgba(139, 87, 40, 0.08) 2px, transparent 2px), linear-gradient(0deg, rgba(139, 87, 40, 0.08) 2px, transparent 2px)',
+          backgroundSize: '24px 24px',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div style={{ position: 'absolute', right: 26, top: 22, display: 'grid', gridTemplateColumns: 'repeat(4, 12px)', gap: 6 }}>
+        {DECO_TILES.map((color, i) => (
+          <div key={i} style={{ width: 12, height: 12, background: color, border: `2px solid ${theme.color.woodDark}` }} />
         ))}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 24 }}>
-        {/* LEFT COLUMN: Text Info */}
-        <div style={{ flex: '1 1 300px', position: 'relative' }}>
-          {/* Badge */}
+      <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
+        <div style={{ flex: '1 1 320px', position: 'relative', zIndex: 1 }}>
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 6,
-              background: '#7ab648',
-              color: '#2d4a18',
-              fontSize: 11,
+              gap: 8,
+              background: theme.color.grassLight,
+              color: theme.color.grassDarker,
+              fontFamily: theme.font.pixel,
+              fontSize: 13,
               fontWeight: 700,
-              borderRadius: 20,
-              padding: '4px 12px',
+              padding: '6px 12px',
               marginBottom: 20,
-              letterSpacing: 0.5,
-              border: '1.5px solid #5a8a30',
+              border: `3px solid ${theme.color.grassDarker}`,
+              boxShadow: `3px 3px 0 ${theme.color.wood}`,
             }}
           >
-            🌿 Unity Developer Intern
+            🌱 Unity Developer Intern
           </div>
 
-          {/* Name */}
           <h1
             style={{
-              fontFamily: "'Pixelify Sans', monospace",
-              fontSize: 'clamp(40px, 7vw, 64px)',
+              fontFamily: theme.font.pixel,
+              fontSize: 'clamp(46px, 8vw, 76px)',
               fontWeight: 700,
-              color: '#3d2e1a',
-              lineHeight: 1,
-              marginBottom: 10,
+              color: theme.color.ink,
+              lineHeight: 0.9,
+              marginBottom: 14,
+              textShadow: `3px 3px 0 ${theme.color.crop}`,
             }}
           >
             Nathan
             <br />
-            <span style={{ color: '#7ab648' }}>Dev.</span>
+            <span style={{ color: theme.color.grassDark, textShadow: `3px 3px 0 ${theme.color.parchmentDark}` }}>Dev.</span>
           </h1>
 
-          {/* Decorative pixel cat — positioned relative to the text column, not stacked inside the heading */}
           <img
             src="/images/cats.png"
             alt=""
             aria-hidden="true"
             style={{
-              width: 90,
-              height: 90,
+              width: 92,
+              height: 92,
               objectFit: 'contain',
               imageRendering: 'pixelated',
               position: 'absolute',
-              top: -10,
-              right: 10,
+              top: 24,
+              right: 18,
               pointerEvents: 'none',
+              filter: `drop-shadow(3px 3px 0 ${theme.color.wood})`,
             }}
           />
 
-          <p style={{ fontSize: 15, color: '#7a6040', marginBottom: 28, fontWeight: 600 }}>
+          <p style={{ fontSize: 15, color: theme.color.inkSoft, marginBottom: 28, fontWeight: 800, lineHeight: 1.65 }}>
             Game Dev · C# · Unity 2D · HCMC
+            <br />
+            <span style={{ color: theme.color.inkMuted }}>Building cozy mechanics, crisp controls, and tiny worlds.</span>
           </p>
 
-          {/* CTAs */}
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <PixelButton to="/projects" variant="primary">
               View Projects
             </PixelButton>
@@ -83,78 +119,80 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Avatar + Stardew Valley Chicken */}
         <div
           style={{
             position: 'relative',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            flex: '1 1 200px',
-            maxWidth: '260px',
+            flex: '1 1 240px',
+            maxWidth: 300,
             margin: '0 auto',
           }}
         >
           <div
             style={{
-              width: '250px',
-              height: '250px',
-              borderRadius: 16,
-              border: '4px solid #c8a96e',
-              background: '#ede4cc',
+              width: 270,
+              height: 270,
+              border: `5px solid ${theme.color.woodDark}`,
+              background:
+                'repeating-linear-gradient(45deg, #d9edb4 0 12px, #c7df9a 12px 24px)',
               overflow: 'hidden',
-              boxShadow: '4px 4px 0px #c8a96e',
+              boxShadow: theme.pixelShadow(6),
+              padding: 8,
             }}
           >
-            <img src="/images/avatar.jpg" alt="Nathan's Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img
+              src="/images/avatar.jpg"
+              alt="Nathan's Avatar"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', border: `3px solid ${theme.color.parchment}` }}
+            />
           </div>
 
           <img
             src="/images/chicken.png"
-            alt="Stardew Valley Chicken"
+            alt="Pixel chicken"
             style={{
               position: 'absolute',
-              bottom: '-10px',
-              left: '-20px',
-              width: '100px',
-              height: '100px',
+              bottom: '-16px',
+              left: '-18px',
+              width: 112,
+              height: 112,
               objectFit: 'contain',
               imageRendering: 'pixelated',
-              filter: 'drop-shadow(2px 2px 0px rgba(0,0,0,0.15))',
+              filter: `drop-shadow(4px 4px 0 ${theme.color.woodDark})`,
             }}
           />
         </div>
       </div>
 
-      {/* Stats bar */}
       <div
         style={{
+          position: 'relative',
+          zIndex: 1,
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          background: '#d4c49a',
-          margin: '40px -40px -48px',
-          borderTop: '2px solid #c8a96e',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+          background: theme.color.soil,
+          margin: '38px -20px -16px',
+          border: `4px solid ${theme.color.woodDark}`,
+          boxShadow: `inset 0 4px 0 ${theme.color.woodLight}`,
         }}
       >
-        {[
-          { num: '03', label: 'Projects' },
-          { num: '1+', label: 'Year with Unity' },
-          { num: 'C#', label: 'Main language' },
-          { num: 'HCM', label: 'Based in' },
-        ].map(({ num, label }, i) => (
+        {stats.map(({ num, label }, i) => (
           <div
             key={label}
             style={{
-              padding: '18px 16px',
+              padding: '17px 14px',
               textAlign: 'center',
-              borderRight: i < 3 ? '1px solid #c8a96e' : 'none',
+              borderRight: i < stats.length - 1 ? `3px solid ${theme.color.woodDark}` : 'none',
+              background: i % 2 === 0 ? 'rgba(255, 240, 200, 0.1)' : 'rgba(0, 0, 0, 0.05)',
             }}
           >
-            <div style={{ fontFamily: "'Pixelify Sans', monospace", fontSize: 24, fontWeight: 700, color: '#5a7a3a' }}>{num}</div>
-            <div style={{ fontSize: 11, color: '#8a7050', fontWeight: 700, marginTop: 2 }}>{label}</div>
+            <div style={{ fontFamily: theme.font.pixel, fontSize: 27, fontWeight: 700, color: theme.color.crop }}>{num}</div>
+            <div style={{ fontSize: 11, color: theme.color.parchment, fontWeight: 800, marginTop: 3 }}>{label}</div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   )
 }

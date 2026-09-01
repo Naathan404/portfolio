@@ -3,6 +3,7 @@ import Nav from '../components/Nav'
 import Home from '../pages/Home'
 import ProjectsPage from '../pages/ProjectsPage'
 import ProjectDetailPage from '../pages/ProjectDetailPage'
+import GalleryPage from '../pages/GalleryPage'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+        <Route path="/gallery" element={<GalleryPage />} />
       </Routes>
     </>
   )

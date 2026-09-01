@@ -1,30 +1,38 @@
-// Stardew Valley-inspired palette & reusable pixel-UI style helpers.
-// Pulled toward the game's actual look: warm wood browns, parchment cream,
-// farm green, and hard (non-blurred) pixel shadows instead of soft CSS shadows.
-
 export const theme = {
   color: {
-    parchment: '#fdf1d6',      // menu/card interior background
-    parchmentDark: '#f0dfb4',  // secondary panel background
-    wood: '#8b5a2b',           // mid wood border
-    woodDark: '#4a2f18',       // darkest wood / body text
-    woodLight: '#c9a06a',      // light wood highlight edge
-    grass: '#6ba33a',          // primary green accent (buttons, links)
-    grassDark: '#3f5c26',      // deep forest green (nav, footer)
-    grassLight: '#e3f0c8',     // pale green chip background
-    gold: '#e8a83c',           // highlight / badge accent
-    sky: '#6bb3d6',            // secondary accent
-    ink: '#3d2e1a',            // headings
-    inkSoft: '#7a6040',        // body text
+    skyTop: '#7ec0d6',
+    skyBottom: '#d9f0c8',
+    grass: '#6fa83f',
+    grassDark: '#3f6b2a',
+    grassDarker: '#28481f',
+    grassLight: '#d9edb4',
+    crop: '#f0c45a',
+    cropDark: '#b9782f',
+    parchment: '#fff0c8',
+    parchmentSoft: '#f8e0a8',
+    parchmentDark: '#dfb978',
+    wood: '#8b5728',
+    woodDark: '#442614',
+    woodLight: '#c98a44',
+    soil: '#6f3f24',
+    soilDark: '#3b2418',
+    red: '#c95a46',
+    blue: '#4f9fc5',
+    ink: '#382414',
+    inkSoft: '#725132',
+    inkMuted: '#9a764d',
+    cream: '#fff7dc',
   },
-  // Hard-edged "pixel" shadow: no blur, offset only — reads as chunky game UI
-  // rather than a soft modern web shadow.
-  pixelShadow: (size = 4, color = '#4a2f18') => `${size}px ${size}px 0px ${color}`,
-  // Double-border "wood plank frame": a light inner line + a dark thick outer
-  // line, mimicking beveled wood UI panels from the game.
+  font: {
+    pixel: "'Pixelify Sans', monospace",
+    body: "'Nunito', sans-serif",
+  },
+  pixelShadow: (size = 4, color = '#442614') => `${size}px ${size}px 0 ${color}`,
+  insetPixelShadow: 'inset 3px 3px 0 rgba(255, 247, 220, 0.65), inset -3px -3px 0 rgba(68, 38, 20, 0.18)',
   woodFrame: {
-    border: '3px solid #4a2f18',
-    outline: '2px solid #c9a06a',
-    outlineOffset: '-6px',
+    border: '4px solid #442614',
+    outline: '2px solid #c98a44',
+    outlineOffset: '-7px',
+    boxShadow: '5px 5px 0 #442614',
   },
 }

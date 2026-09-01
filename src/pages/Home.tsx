@@ -4,6 +4,7 @@ import Hero from '../components/Hero'
 import About from '../components/About'
 import FeaturedProjects from '../components/FeaturedProjects'
 import Contact from '../components/Contact'
+import PixelWorldMap from '../components/PixelWorldMap'
 
 export default function Home() {
   const { hash } = useLocation()
@@ -18,6 +19,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <PixelWorldMap />
       <About />
       <FeaturedProjects />
       <Contact />

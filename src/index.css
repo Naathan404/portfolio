@@ -7,79 +7,357 @@
 }
 
 :root {
-  /* Parchment / UI panel backgrounds */
-  --bg: #e6dcb8;
-  --bg2: #faf5e8;
-  --bg3: #eee4c8;
-
-  /* Wood-brown structural colors */
-  --bg-nav: #3f5c26;
-  --bg-stats: #d4c49a;
-  --bg-contact: #3f5c26;
-  --border: #8b5a2b;
-  --border-light: #c9a06a;
-  --border-dark: #4a2f18;
-
-  /* Farm green accents */
-  --border-green: #a0c870;
-  --green: #6ba33a;
-  --green-dark: #5a8a30;
-  --green-darker: #3d6020;
-  --green-light: #e3f0c8;
-
-  /* Gold / secondary accent (crops, stars, highlights) */
-  --gold: #e8a83c;
-
-  /* Text */
-  --text: #3d2e1a;
-  --text2: #7a6040;
-  --text3: #8a7050;
-  --text-nav: #f5ede0;
-  --text-nav2: #c8e6a0;
-
+  --sky-top: #7ec0d6;
+  --sky-bottom: #d9f0c8;
+  --grass: #6fa83f;
+  --grass-dark: #3f6b2a;
+  --grass-darker: #28481f;
+  --grass-light: #d9edb4;
+  --crop: #f0c45a;
+  --crop-dark: #b9782f;
+  --red: #c95a46;
+  --parchment: #fff0c8;
+  --parchment-soft: #f8e0a8;
+  --parchment-dark: #dfb978;
+  --wood: #8b5728;
+  --wood-dark: #442614;
+  --wood-light: #c98a44;
+  --soil: #6f3f24;
+  --soil-dark: #3b2418;
+  --ink: #382414;
+  --ink-soft: #725132;
+  --ink-muted: #9a764d;
+  --cream: #fff7dc;
   --pixel: 'Pixelify Sans', monospace;
   --sans: 'Nunito', sans-serif;
-
-  /* Hard, non-blurred "game UI" shadow */
-  --pixel-shadow: 4px 4px 0px var(--border-dark);
+  --pixel-shadow: 5px 5px 0 var(--wood-dark);
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
-  background-color: var(--bg);
-  /* Dithered texture: two overlapping diagonal dot patterns, like the
-     grass/soil stipple shading used throughout Stardew Valley's pixel art,
-     instead of a flat solid color. */
-  background-image:
-    repeating-linear-gradient(45deg, rgba(74, 47, 24, 0.05) 0px, rgba(74, 47, 24, 0.05) 1.5px, transparent 1.5px, transparent 7px),
-    repeating-linear-gradient(-45deg, rgba(107, 163, 58, 0.06) 0px, rgba(107, 163, 58, 0.06) 1.5px, transparent 1.5px, transparent 9px);
-  color: var(--text);
-  font-family: var(--sans);
   min-height: 100vh;
   overflow-x: hidden;
+  color: var(--ink);
+  font-family: var(--sans);
+  background-color: var(--grass-light);
+  background-image:
+    linear-gradient(180deg, rgba(126, 192, 214, 0.65) 0, rgba(217, 240, 200, 0.55) 280px, rgba(111, 168, 63, 0.2) 580px),
+    repeating-linear-gradient(0deg, rgba(68, 38, 20, 0.08) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(90deg, rgba(68, 38, 20, 0.06) 0 2px, transparent 2px 16px),
+    linear-gradient(45deg, rgba(240, 196, 90, 0.18) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(63, 107, 42, 0.2) 25%, transparent 25%);
+  background-size: auto, 16px 16px, 16px 16px, 32px 32px, 32px 32px;
 }
 
-a { text-decoration: none; color: inherit; }
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: -1;
+}
 
-/* Keep pixel-art sprites (avatar deco, icons) crisp instead of browser-blurred */
+body::before {
+  top: 0;
+  height: 220px;
+  background-image:
+    linear-gradient(90deg, transparent 0 18%, rgba(255, 247, 220, 0.5) 18% 23%, transparent 23% 60%, rgba(255, 247, 220, 0.4) 60% 67%, transparent 67%),
+    linear-gradient(180deg, rgba(126, 192, 214, 0.8), transparent);
+  image-rendering: pixelated;
+}
+
+body::after {
+  bottom: 0;
+  height: 120px;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(40, 72, 31, 0.22) 0 10px, rgba(111, 168, 63, 0.24) 10px 20px),
+    repeating-linear-gradient(0deg, transparent 0 12px, rgba(68, 38, 20, 0.08) 12px 14px);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pixel-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 247, 220, 0.7), transparent 42%),
+    var(--parchment);
+  border: 4px solid var(--wood-dark);
+  outline: 2px solid var(--wood-light);
+  outline-offset: -7px;
+  box-shadow: var(--pixel-shadow);
+}
+
+.pixel-tile {
+  image-rendering: pixelated;
+}
+
+.game-banner-marquee {
+  position: relative;
+  overflow: hidden;
+  margin: 4px -28px 28px;
+  padding: 14px 0;
+  background: var(--soil-dark);
+  border-top: 4px solid var(--wood-dark);
+  border-bottom: 4px solid var(--wood-dark);
+}
+
+.game-banner-marquee::before,
+.game-banner-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 70px;
+  pointer-events: none;
+}
+
+.game-banner-marquee::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--soil-dark), transparent);
+}
+
+.game-banner-marquee::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--soil-dark), transparent);
+}
+
+.game-banner-track {
+  display: flex;
+  width: max-content;
+  gap: 14px;
+  animation: game-banner-scroll 28s linear infinite;
+}
+
+.game-banner-marquee:hover .game-banner-track {
+  animation-play-state: paused;
+}
+
+.game-banner-card {
+  position: relative;
+  display: grid;
+  align-content: end;
+  width: 250px;
+  height: 112px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  padding: 12px 14px;
+  border: 4px solid var(--wood-dark);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
+  background: var(--soil-dark);
+}
+
+.game-banner-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.95) contrast(1.05);
+}
+
+.game-banner-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.82) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 62%);
+}
+
+.game-banner-card strong {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+  font-family: var(--pixel);
+  font-size: 19px;
+  line-height: 1;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.92),
+    -2px 0 0 rgba(0, 0, 0, 0.75),
+    0 -2px 0 rgba(0, 0, 0, 0.75);
+}
+
+.game-banner-card small {
+  position: relative;
+  z-index: 3;
+  margin-top: 5px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+  opacity: 1;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.9);
+}
+
+.game-banner-shine,
+.game-gallery-cover-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image:
+    linear-gradient(90deg, rgba(255, 247, 220, 0.12) 2px, transparent 2px),
+    linear-gradient(0deg, rgba(255, 247, 220, 0.12) 2px, transparent 2px),
+    linear-gradient(135deg, rgba(255, 247, 220, 0.18) 0 22%, transparent 22% 100%);
+  background-size: 18px 18px, 18px 18px, 100% 100%;
+}
+
+.game-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.game-gallery-card {
+  overflow: hidden;
+  background: var(--cream);
+  border: 4px solid var(--wood-dark);
+  box-shadow: var(--pixel-shadow);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.game-gallery-card:hover {
+  transform: translate(-2px, -3px);
+  box-shadow: 7px 7px 0 var(--wood-dark);
+}
+
+.game-gallery-cover {
+  position: relative;
+  display: flex;
+  align-items: end;
+  min-height: 152px;
+  padding: 16px;
+  border-bottom: 4px solid var(--wood-dark);
+  overflow: hidden;
+  background: var(--soil-dark);
+}
+
+.game-gallery-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.95) contrast(1.05);
+}
+
+.game-gallery-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.82) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 68%);
+}
+
+.game-gallery-cover-title {
+  position: relative;
+  z-index: 3;
+  font-family: var(--pixel);
+  color: #ffffff;
+  font-size: 25px;
+  line-height: 1;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.92),
+    -2px 0 0 rgba(0, 0, 0, 0.75),
+    0 -2px 0 rgba(0, 0, 0, 0.75);
+}
+
+.game-progress-chip {
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  color: var(--grass-darker);
+  background: var(--grass-light);
+  border: 2px solid var(--grass-dark);
+  box-shadow: 2px 2px 0 var(--wood-dark);
+  font-family: var(--pixel);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.game-achievement-box {
+  padding: 10px 11px;
+  background: var(--parchment-soft);
+  border: 3px solid var(--wood);
+  box-shadow: 3px 3px 0 var(--parchment-dark);
+}
+
+.game-achievement-box strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--wood-dark);
+  font-family: var(--pixel);
+  font-size: 12px;
+}
+
+.game-achievement-box p {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+@keyframes game-banner-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 7px));
+  }
+}
+
 img[src*="pixelated"],
 img.pixel,
 img[src$=".png"] {
   image-rendering: pixelated;
 }
 
-/* Chunky retro scrollbar to match the wood/parchment theme (Chromium/WebKit) */
+::selection {
+  color: var(--wood-dark);
+  background: var(--crop);
+}
+
 ::-webkit-scrollbar {
-  width: 14px;
+  width: 16px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--bg3);
+  background: var(--parchment-soft);
+  border-left: 3px solid var(--wood-dark);
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border: 3px solid var(--bg3);
+  background: var(--wood);
+  border: 3px solid var(--parchment-soft);
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-dark);
+  background: var(--wood-dark);
+}
+
+@media (max-width: 760px) {
+  .about-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pixel-world-map-grid {
+    grid-template-columns: repeat(10, 58px) !important;
+    overflow-x: auto !important;
+    min-height: 500px !important;
+  }
 }

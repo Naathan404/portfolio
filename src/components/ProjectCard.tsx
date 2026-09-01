@@ -2,16 +2,57 @@ import { Link } from 'react-router-dom'
 import type { Project } from '../data/projects'
 import { theme } from '../theme'
 
-// Color each engine badge differently so projects are distinguishable at a
-// glance while scrolling, instead of every card wearing the same green chip.
-// Unity uses a deeper, mossier green than the site's main grass-green
-// (buttons/nav), so it still reads as green but doesn't visually merge in.
 const ENGINE_STYLE: Record<string, { bg: string; border: string; text: string; accent: string }> = {
-  'UNITY 2D': { bg: '#dfe8cd', border: '#4f7942', text: '#2f4a26', accent: '#4f7942' },
-  'GODOT 4': { bg: '#dcf0f5', border: theme.color.sky, text: '#1f5a72', accent: theme.color.sky },
-  'DIRECT X': { bg: '#fbe8c8', border: theme.color.gold, text: '#8a5a10', accent: theme.color.gold },
+  'UNITY 2D': { bg: theme.color.grassLight, border: theme.color.grassDark, text: theme.color.grassDarker, accent: theme.color.grassDark },
+  'GODOT 4': { bg: '#d9edf4', border: theme.color.blue, text: '#1f5a72', accent: theme.color.blue },
+  'DIRECT X': { bg: '#fbe4b4', border: theme.color.cropDark, text: '#7a4418', accent: theme.color.cropDark },
 }
-const DEFAULT_STYLE = { bg: '#ede4cc', border: theme.color.wood, text: theme.color.inkSoft, accent: theme.color.wood }
+const DEFAULT_STYLE = { bg: theme.color.parchmentSoft, border: theme.color.wood, text: theme.color.inkSoft, accent: theme.color.wood }
+
+function Badge({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+  return (
+    <span
+      style={{
+        fontSize: 10,
+        fontWeight: 800,
+        borderRadius: 0,
+        padding: '3px 8px',
+        boxShadow: `2px 2px 0 ${theme.color.woodDark}`,
+        ...style,
+      }}
+    >
+      {children}
+    </span>
+  )
+}
+
+function ActionLink({ to, href, children, variant = 'default' }: { to?: string; href?: string; children: React.ReactNode; variant?: 'default' | 'video' }) {
+  const shared = {
+    fontFamily: theme.font.pixel,
+    fontSize: 12,
+    fontWeight: 700,
+    color: variant === 'video' ? '#8f3d16' : theme.color.ink,
+    background: variant === 'video' ? '#ffe0b8' : theme.color.parchmentSoft,
+    border: `2px solid ${variant === 'video' ? theme.color.cropDark : theme.color.wood}`,
+    boxShadow: `3px 3px 0 ${theme.color.woodDark}`,
+    padding: '6px 12px',
+    whiteSpace: 'nowrap' as const,
+  }
+
+  if (to) {
+    return (
+      <Link to={to} style={shared}>
+        {children}
+      </Link>
+    )
+  }
+
+  return (
+    <a href={href} target="_blank" rel="noreferrer" style={shared}>
+      {children}
+    </a>
+  )
+}
 
 export default function ProjectCard({
   project,
@@ -20,7 +61,6 @@ export default function ProjectCard({
 }: {
   project: Project
   onImageClick?: (src: string) => void
-  /** compact = used in Home preview: shorter card, always links out to detail page */
   compact?: boolean
 }) {
   const { slug, badge, type, wip, title, images, description, role, tech, video, github, demo } = project
@@ -29,125 +69,92 @@ export default function ProjectCard({
   const avatarSize = compact ? 96 : 128
 
   return (
-    <div
+    <article
       style={{
-        background: '#faf5e8',
-        border: '2px solid #c8a96e',
-        borderLeft: `6px solid ${engine.accent}`,
-        borderRadius: 10,
-        padding: compact ? '16px 20px' : '18px 22px',
-        transition: 'transform 0.1s',
+        background:
+          `linear-gradient(135deg, rgba(255, 247, 220, 0.78), transparent 46%), ${theme.color.parchment}`,
+        border: `4px solid ${theme.color.woodDark}`,
+        borderLeft: `8px solid ${engine.accent}`,
+        boxShadow: theme.pixelShadow(compact ? 4 : 5),
+        padding: compact ? '16px 18px' : '20px 22px',
+        transition: 'transform 0.1s, box-shadow 0.1s',
       }}
-      onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-2px)')}
-      onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = 'translate(-2px, -2px)'
+        e.currentTarget.style.boxShadow = theme.pixelShadow(compact ? 6 : 7)
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = 'translate(0, 0)'
+        e.currentTarget.style.boxShadow = theme.pixelShadow(compact ? 4 : 5)
+      }}
     >
-      {/* Header row: fixed square avatar/icon thumbnail + tags/title beside it.
-          A fixed square never distorts, no matter the source screenshot's aspect ratio. */}
-      <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: compact ? 12 : 16 }}>
+      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: compact ? 12 : 16, flexWrap: 'wrap' }}>
         {cover && (
-          <div
+          <button
+            type="button"
+            onClick={() => onImageClick?.(cover)}
             style={{
               flexShrink: 0,
               width: avatarSize * 1.25,
               height: avatarSize,
-              borderRadius: 8,
-              border: `3px solid ${engine.accent}`,
+              border: `4px solid ${engine.accent}`,
               overflow: 'hidden',
-              boxShadow: theme.pixelShadow(3, engine.accent),
+              boxShadow: `4px 4px 0 ${theme.color.woodDark}`,
+              background: theme.color.cream,
+              padding: 0,
+              cursor: onImageClick ? 'pointer' : 'default',
             }}
           >
-            <img src={cover} alt={`${title} icon`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
+            <img src={cover} alt={`${title} icon`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          </button>
         )}
 
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 800,
-                borderRadius: 4,
-                padding: '2px 8px',
-                background: engine.bg,
-                color: engine.text,
-                border: `1.5px solid ${engine.border}`,
-              }}
-            >
-              {badge}
-            </span>
-            <span
-              style={{
-                fontSize: 10,
-                fontWeight: 800,
-                borderRadius: 4,
-                padding: '2px 8px',
-                background: '#ede4cc',
-                color: theme.color.inkSoft,
-                border: '1.5px solid #c8a96e',
-              }}
-            >
-              {type}
-            </span>
-            {wip && (
-              <span
-                style={{
-                  fontSize: 10,
-                  fontWeight: 800,
-                  borderRadius: 4,
-                  padding: '2px 8px',
-                  background: '#fff3cd',
-                  color: '#856404',
-                  border: '1.5px solid #ffc107',
-                }}
-              >
-                WORK-IN-PROGRESS
-              </span>
-            )}
+        <div style={{ flex: 1, minWidth: 220 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+            <Badge style={{ background: engine.bg, color: engine.text, border: `2px solid ${engine.border}` }}>{badge}</Badge>
+            <Badge style={{ background: theme.color.parchmentSoft, color: theme.color.inkSoft, border: `2px solid ${theme.color.wood}` }}>{type}</Badge>
+            {wip && <Badge style={{ background: '#fff0a8', color: '#7a4a00', border: `2px solid ${theme.color.cropDark}` }}>WORK-IN-PROGRESS</Badge>}
           </div>
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: '#3d2e1a', fontFamily: "'Pixelify Sans', monospace" }}>{title}</h2>
-          <p style={{ fontSize: 14, color: '#7a6040', lineHeight: 1.65, marginBottom: compact ? 12 : 16 }}>
+          <h2 style={{ fontSize: compact ? 24 : 28, fontWeight: 700, color: theme.color.ink, fontFamily: theme.font.pixel, marginBottom: 6 }}>
+            {title}
+          </h2>
+          <p style={{ fontSize: 14, color: theme.color.inkSoft, lineHeight: 1.65, marginBottom: compact ? 12 : 16, fontWeight: 700 }}>
             {description}
           </p>
         </div>
       </div>
 
-      {/* Everything else: full width below the header row */}
-      {/* <p style={{ fontSize: 13, color: '#7a6040', lineHeight: 1.65, marginBottom: compact ? 12 : 16 }}>
-        {description}
-      </p> */}
-
       {!compact && role && (
         <div
           style={{
             marginBottom: 16,
-            padding: '8px 12px',
+            padding: '10px 12px',
             background: engine.bg,
-            border: `1.5px solid ${engine.border}`,
-            borderRadius: 6,
+            border: `3px solid ${engine.border}`,
+            boxShadow: `3px 3px 0 ${theme.color.woodDark}`,
           }}
         >
           <span style={{ fontSize: 11, fontWeight: 800, color: engine.text }}>
             → {type === 'SOLO' ? 'HIGHLIGHTS:' : 'MY ROLE:'}
           </span>
-          <span style={{ fontSize: 12, color: '#5a4030', marginLeft: 6, fontWeight: 600, whiteSpace: 'pre-line' }}>
+          <span style={{ fontSize: 12, color: theme.color.ink, marginLeft: 6, fontWeight: 700, whiteSpace: 'pre-line' }}>
             {role}
           </span>
         </div>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
           {tech.map(t => (
             <span
               key={t}
               style={{
                 fontSize: 11,
-                fontWeight: 700,
-                color: '#7a6040',
-                background: '#ede4cc',
-                border: '1px solid #c8a96e',
-                borderRadius: 4,
-                padding: '3px 9px',
+                fontWeight: 800,
+                color: theme.color.inkSoft,
+                background: theme.color.cream,
+                border: `2px solid ${theme.color.parchmentDark}`,
+                padding: '3px 8px',
               }}
             >
               {t}
@@ -155,59 +162,24 @@ export default function ProjectCard({
           ))}
         </div>
 
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {compact ? (
-            <Link
-              to={`/projects/${slug}`}
-              style={{
-                fontSize: 11,
-                fontWeight: 800,
-                color: engine.text,
-                background: engine.bg,
-                border: `1.5px solid ${engine.border}`,
-                borderRadius: 6,
-                padding: '6px 14px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              Case Study →
-            </Link>
+            <ActionLink to={`/projects/${slug}`}>Case Study →</ActionLink>
           ) : (
             <>
-              {[
-                ...(video ? [{ label: 'Demo ▶', href: video, id: 'video' }] : []),
-                ...(github ? [{ label: 'GitHub ↗', href: github, id: 'git' }] : []),
-                ...(demo ? [{ label: 'Play ↗', href: demo, id: 'play' }] : []),
-              ].map(({ label, href, id }) => (
-                <a
-                  key={id}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 800,
-                    color: id === 'video' ? '#c05000' : engine.text,
-                    background: id === 'video' ? '#fff0e0' : engine.bg,
-                    border: id === 'video' ? '1.5px solid #f0a060' : `1.5px solid ${engine.border}`,
-                    borderRadius: 6,
-                    padding: '6px 14px',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {label}
-                </a>
-              ))}
+              {video && <ActionLink href={video} variant="video">Demo ▶</ActionLink>}
+              {github && <ActionLink href={github}>GitHub ↗</ActionLink>}
+              {demo && <ActionLink href={demo}>Play ↗</ActionLink>}
               {!github && (
                 <span
                   style={{
-                    fontSize: 11,
-                    fontWeight: 800,
-                    color: '#aaa',
-                    background: '#f0ebe0',
-                    border: '1.5px solid #ddd',
-                    borderRadius: 6,
-                    padding: '6px 14px',
+                    fontFamily: theme.font.pixel,
+                    fontSize: 12,
+                    fontWeight: 700,
+                    color: theme.color.inkMuted,
+                    background: '#eadcc0',
+                    border: `2px solid ${theme.color.parchmentDark}`,
+                    padding: '6px 12px',
                     cursor: 'not-allowed',
                   }}
                   title="Private repository — available upon request"
@@ -215,21 +187,7 @@ export default function ProjectCard({
                   GitHub (Private)
                 </span>
               )}
-              <Link
-                to={`/projects/${slug}`}
-                style={{
-                  fontSize: 11,
-                  fontWeight: 800,
-                  color: '#7a6040',
-                  background: '#ede4cc',
-                  border: '1.5px solid #c8a96e',
-                  borderRadius: 6,
-                  padding: '6px 14px',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                Details →
-              </Link>
+              <ActionLink to={`/projects/${slug}`}>Details →</ActionLink>
             </>
           )}
         </div>
@@ -239,13 +197,12 @@ export default function ProjectCard({
         <div
           style={{
             display: 'flex',
-            gap: 8,
-            marginTop: 16,
+            gap: 10,
+            marginTop: 18,
             overflowX: 'auto',
-            paddingBottom: 4,
-            paddingTop: 6,
-            paddingLeft: 5,
-            paddingRight: 5,
+            padding: '8px 6px 6px',
+            background: 'rgba(111, 63, 36, 0.08)',
+            border: `2px dashed ${theme.color.wood}`,
           }}
         >
           {images.slice(1).map((src, i) => (
@@ -255,26 +212,26 @@ export default function ProjectCard({
               alt={`${title} screenshot ${i + 2}`}
               onClick={() => onImageClick(src)}
               style={{
-                height: 90,
-                borderRadius: 6,
-                border: '1.5px solid #c8a96e',
+                height: 92,
+                border: `3px solid ${theme.color.wood}`,
                 objectFit: 'cover',
                 flexShrink: 0,
                 cursor: 'pointer',
-                transition: 'transform 0.2s ease, border-color 0.2s ease',
+                boxShadow: `3px 3px 0 ${theme.color.woodDark}`,
+                transition: 'transform 0.12s, border-color 0.12s',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.transform = 'translateY(-4px) scale(1.05)'
+                e.currentTarget.style.transform = 'translateY(-4px)'
                 e.currentTarget.style.borderColor = engine.accent
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.transform = 'translateY(0) scale(1)'
-                e.currentTarget.style.borderColor = '#c8a96e'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.borderColor = theme.color.wood
               }}
             />
           ))}
         </div>
       )}
-    </div>
+    </article>
   )
 }

@@ -3,190 +3,201 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import Container from '../components/Container'
 import Lightbox from '../components/Lightbox'
 import { getProjectBySlug } from '../data/projects'
+import { theme } from '../theme'
+
+function ProjectAction({ href, children, variant = 'default' }: { href: string; children: React.ReactNode; variant?: 'default' | 'video' }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      style={{
+        fontFamily: theme.font.pixel,
+        fontSize: 13,
+        fontWeight: 700,
+        color: variant === 'video' ? '#8f3d16' : theme.color.ink,
+        background: variant === 'video' ? '#ffe0b8' : theme.color.parchmentSoft,
+        border: `3px solid ${variant === 'video' ? theme.color.cropDark : theme.color.wood}`,
+        boxShadow: theme.pixelShadow(4),
+        padding: '8px 15px',
+      }}
+    >
+      {children}
+    </a>
+  )
+}
 
 export default function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
   const project = slug ? getProjectBySlug(slug) : undefined
 
-  if (!project) return <Navigate to="/projects" replace />
+  if (!project) {
+    return <Navigate to="/projects" replace />
+  }
 
   const { badge, type, wip, title, description, role, tech, images, github, demo, video } = project
 
   return (
-    <Container style={{ padding: '32px 24px 48px' }}>
-      <Link to="/projects" style={{ fontSize: 12, fontWeight: 700, color: '#5a7a3a' }}>
-        ← Back to all projects
-      </Link>
+    <Container style={{ paddingTop: 32, paddingBottom: 58 }}>
+      <div className="pixel-panel" style={{ padding: '26px 28px 34px' }}>
+        <Link
+          to="/projects"
+          style={{
+            display: 'inline-flex',
+            fontFamily: theme.font.pixel,
+            fontSize: 13,
+            fontWeight: 700,
+            color: theme.color.cream,
+            background: theme.color.grassDark,
+            border: `3px solid ${theme.color.grassDarker}`,
+            boxShadow: `3px 3px 0 ${theme.color.woodDark}`,
+            padding: '7px 12px',
+            marginBottom: 22,
+          }}
+        >
+          ← Back to all projects
+        </Link>
 
-      <div style={{ display: 'flex', gap: 6, margin: '20px 0 10px' }}>
-        {[badge, type, ...(wip ? ['WORK-IN-PROGRESS'] : [])].map((b, i) => {
-          const isWip = b === 'WORK-IN-PROGRESS'
-          return (
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+          {[badge, type, ...(wip ? ['WORK-IN-PROGRESS'] : [])].map((b, i) => {
+            const isWip = b === 'WORK-IN-PROGRESS'
+            return (
+              <span
+                key={`${b}-${i}`}
+                style={{
+                  fontSize: 10,
+                  fontWeight: 800,
+                  padding: '3px 8px',
+                  background: isWip ? '#fff0a8' : theme.color.grassLight,
+                  color: isWip ? '#7a4a00' : theme.color.grassDarker,
+                  border: `2px solid ${isWip ? theme.color.cropDark : theme.color.grassDark}`,
+                  boxShadow: `2px 2px 0 ${theme.color.woodDark}`,
+                }}
+              >
+                {b}
+              </span>
+            )
+          })}
+        </div>
+
+        <h1
+          style={{
+            fontFamily: theme.font.pixel,
+            fontSize: 'clamp(34px, 6vw, 48px)',
+            color: theme.color.ink,
+            marginBottom: 16,
+            textShadow: `3px 3px 0 ${theme.color.crop}`,
+          }}
+        >
+          {title}
+        </h1>
+
+        <p
+          style={{
+            fontSize: 14,
+            color: theme.color.inkSoft,
+            lineHeight: 1.75,
+            marginBottom: 22,
+            maxWidth: 720,
+            fontWeight: 700,
+            background: theme.color.cream,
+            border: `3px solid ${theme.color.wood}`,
+            boxShadow: `3px 3px 0 ${theme.color.parchmentDark}`,
+            padding: '14px 16px',
+          }}
+        >
+          {description}
+        </p>
+
+        {role && (
+          <div
+            style={{
+              marginBottom: 24,
+              padding: '14px 16px',
+              background: theme.color.grassLight,
+              border: `3px solid ${theme.color.grassDark}`,
+              boxShadow: `4px 4px 0 ${theme.color.woodDark}`,
+              maxWidth: 720,
+            }}
+          >
+            <div style={{ fontFamily: theme.font.pixel, fontSize: 13, fontWeight: 700, color: theme.color.grassDarker, marginBottom: 6 }}>
+              {type === 'SOLO' ? 'HIGHLIGHTS' : 'MY ROLE'}
+            </div>
+            <div style={{ fontSize: 13, color: theme.color.ink, fontWeight: 700, whiteSpace: 'pre-line', lineHeight: 1.7 }}>
+              {role}
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 26 }}>
+          {tech.map(t => (
             <span
-              key={`${b}-${i}`}
+              key={t}
               style={{
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: 800,
-                borderRadius: 4,
-                padding: '2px 8px',
-                background: isWip ? '#fff3cd' : '#e8f5d0',
-                color: isWip ? '#856404' : '#3d6020',
-                border: isWip ? '1.5px solid #ffc107' : '1.5px solid #a0c870',
+                color: theme.color.inkSoft,
+                background: theme.color.cream,
+                border: `2px solid ${theme.color.parchmentDark}`,
+                padding: '4px 9px',
               }}
             >
-              {b}
+              {t}
             </span>
-          )
-        })}
-      </div>
-
-      <h1 style={{ fontFamily: "'Pixelify Sans', monospace", fontSize: 30, color: '#3d2e1a', marginBottom: 14 }}>
-        {title}
-      </h1>
-
-      <p style={{ fontSize: 14, color: '#7a6040', lineHeight: 1.75, marginBottom: 20, maxWidth: 640 }}>
-        {description}
-      </p>
-
-      {role && (
-        <div
-          style={{
-            marginBottom: 24,
-            padding: '14px 16px',
-            background: '#e8f5d0',
-            border: '1.5px solid #a0c870',
-            borderRadius: 8,
-            maxWidth: 640,
-          }}
-        >
-          <div style={{ fontSize: 12, fontWeight: 800, color: '#3d6020', marginBottom: 4 }}>
-            {type === 'SOLO' ? 'HIGHLIGHTS' : 'MY ROLE'}
-          </div>
-          <div style={{ fontSize: 13, color: '#5a4030', fontWeight: 600, whiteSpace: 'pre-line', lineHeight: 1.7 }}>
-            {role}
-          </div>
-        </div>
-      )}
-
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 24 }}>
-        {tech.map(t => (
-          <span
-            key={t}
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: '#7a6040',
-              background: '#ede4cc',
-              border: '1px solid #c8a96e',
-              borderRadius: 4,
-              padding: '3px 9px',
-            }}
-          >
-            {t}
-          </span>
-        ))}
-      </div>
-
-      <div style={{ display: 'flex', gap: 10, marginBottom: 28, flexWrap: 'wrap' }}>
-        {video && (
-          <a
-            href={video}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              fontSize: 12,
-              fontWeight: 800,
-              color: '#c05000',
-              background: '#fff0e0',
-              border: '1.5px solid #f0a060',
-              borderRadius: 6,
-              padding: '8px 16px',
-            }}
-          >
-            Demo ▶
-          </a>
-        )}
-        {github && (
-          <a
-            href={github}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              fontSize: 12,
-              fontWeight: 800,
-              color: '#3d6020',
-              background: '#e8f5d0',
-              border: '1.5px solid #a0c870',
-              borderRadius: 6,
-              padding: '8px 16px',
-            }}
-          >
-            GitHub ↗
-          </a>
-        )}
-        {demo && (
-          <a
-            href={demo}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              fontSize: 12,
-              fontWeight: 800,
-              color: '#3d6020',
-              background: '#e8f5d0',
-              border: '1.5px solid #a0c870',
-              borderRadius: 6,
-              padding: '8px 16px',
-            }}
-          >
-            Play ↗
-          </a>
-        )}
-        {!github && (
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 800,
-              color: '#aaa',
-              background: '#f0ebe0',
-              border: '1.5px solid #ddd',
-              borderRadius: 6,
-              padding: '8px 16px',
-            }}
-            title="Private repository — available upon request"
-          >
-            GitHub (Private)
-          </span>
-        )}
-      </div>
-
-      {images && images.length > 0 && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: 12,
-          }}
-        >
-          {images.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt={`${title} screenshot ${i + 1}`}
-              onClick={() => setSelectedImg(src)}
-              style={{
-                width: '100%',
-                height: 160,
-                objectFit: 'cover',
-                borderRadius: 8,
-                border: '1.5px solid #c8a96e',
-                cursor: 'pointer',
-              }}
-            />
           ))}
         </div>
-      )}
+
+        <div style={{ display: 'flex', gap: 12, marginBottom: 30, flexWrap: 'wrap' }}>
+          {video && <ProjectAction href={video} variant="video">Demo ▶</ProjectAction>}
+          {github && <ProjectAction href={github}>GitHub ↗</ProjectAction>}
+          {demo && <ProjectAction href={demo}>Play ↗</ProjectAction>}
+          {!github && (
+            <span
+              style={{
+                fontFamily: theme.font.pixel,
+                fontSize: 13,
+                fontWeight: 700,
+                color: theme.color.inkMuted,
+                background: '#eadcc0',
+                border: `3px solid ${theme.color.parchmentDark}`,
+                padding: '8px 15px',
+              }}
+              title="Private repository — available upon request"
+            >
+              GitHub (Private)
+            </span>
+          )}
+        </div>
+
+        {images && images.length > 0 && (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+              gap: 16,
+            }}
+          >
+            {images.map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                alt={`${title} screenshot ${i + 1}`}
+                onClick={() => setSelectedImg(src)}
+                style={{
+                  width: '100%',
+                  height: 164,
+                  objectFit: 'cover',
+                  border: `4px solid ${theme.color.woodDark}`,
+                  boxShadow: theme.pixelShadow(4),
+                  cursor: 'pointer',
+                  background: theme.color.cream,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
       <Lightbox src={selectedImg} onClose={() => setSelectedImg(null)} />
     </Container>
