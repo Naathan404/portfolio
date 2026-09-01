@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
-import Nav from './components/Nav'
-import Home from './pages/Home'
-import ProjectsPage from './pages/ProjectsPage'
-import ProjectDetailPage from './pages/ProjectDetailPage'
+import Nav from '../components/Nav'
+import Home from '../pages/Home'
+import ProjectsPage from '../pages/ProjectsPage'
+import ProjectDetailPage from '../pages/ProjectDetailPage'
 
 function App() {
   return (
