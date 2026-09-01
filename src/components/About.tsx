@@ -12,7 +12,7 @@ export default function About() {
     <section id="about" style={{ padding: '28px 32px', borderBottom: '2px solid #c8a96e' }}>
       <SectionLabel icon="👤">About</SectionLabel>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="about-grid">
         {/* Text */}
         <p style={{ fontSize: 14, color: '#7a6040', lineHeight: 1.75, fontWeight: 600 }}>
           Game dev student based in Ho Chi Minh City, looking for a Unity internship
@@ -27,12 +27,20 @@ export default function About() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {tools.map(({ icon, name, note }) => (
             <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{
-                width: 32, height: 32,
-                background: '#e8f5d0', border: '1.5px solid #a0c870',
-                borderRadius: 6, display: 'flex', alignItems: 'center',
-                justifyContent: 'center', fontSize: 14, flexShrink: 0,
-              }}>
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  background: '#e8f5d0',
+                  border: '1.5px solid #a0c870',
+                  borderRadius: 6,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 14,
+                  flexShrink: 0,
+                }}
+              >
                 {icon}
               </div>
               <div>

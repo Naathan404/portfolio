@@ -7,31 +7,53 @@
 }
 
 :root {
-  --bg: #f5efe0;
+  /* Parchment / UI panel backgrounds */
+  --bg: #e6dcb8;
   --bg2: #faf5e8;
   --bg3: #eee4c8;
-  --bg-nav: #5a7a3a;
+
+  /* Wood-brown structural colors */
+  --bg-nav: #3f5c26;
   --bg-stats: #d4c49a;
-  --bg-contact: #5a7a3a;
-  --border: #c8a96e;
+  --bg-contact: #3f5c26;
+  --border: #8b5a2b;
+  --border-light: #c9a06a;
+  --border-dark: #4a2f18;
+
+  /* Farm green accents */
   --border-green: #a0c870;
-  --green: #7ab648;
+  --green: #6ba33a;
   --green-dark: #5a8a30;
   --green-darker: #3d6020;
-  --green-light: #e8f5d0;
+  --green-light: #e3f0c8;
+
+  /* Gold / secondary accent (crops, stars, highlights) */
+  --gold: #e8a83c;
+
+  /* Text */
   --text: #3d2e1a;
   --text2: #7a6040;
   --text3: #8a7050;
   --text-nav: #f5ede0;
   --text-nav2: #c8e6a0;
+
   --pixel: 'Pixelify Sans', monospace;
   --sans: 'Nunito', sans-serif;
+
+  /* Hard, non-blurred "game UI" shadow */
+  --pixel-shadow: 4px 4px 0px var(--border-dark);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
+  /* Dithered texture: two overlapping diagonal dot patterns, like the
+     grass/soil stipple shading used throughout Stardew Valley's pixel art,
+     instead of a flat solid color. */
+  background-image:
+    repeating-linear-gradient(45deg, rgba(74, 47, 24, 0.05) 0px, rgba(74, 47, 24, 0.05) 1.5px, transparent 1.5px, transparent 7px),
+    repeating-linear-gradient(-45deg, rgba(107, 163, 58, 0.06) 0px, rgba(107, 163, 58, 0.06) 1.5px, transparent 1.5px, transparent 9px);
   color: var(--text);
   font-family: var(--sans);
   min-height: 100vh;
@@ -39,3 +61,25 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
+
+/* Keep pixel-art sprites (avatar deco, icons) crisp instead of browser-blurred */
+img[src*="pixelated"],
+img.pixel,
+img[src$=".png"] {
+  image-rendering: pixelated;
+}
+
+/* Chunky retro scrollbar to match the wood/parchment theme (Chromium/WebKit) */
+::-webkit-scrollbar {
+  width: 14px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg3);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 3px solid var(--bg3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-dark);
+}

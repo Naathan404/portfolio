@@ -3,28 +3,18 @@ import Nav from './components/Nav'
 import Home from './pages/Home'
 import ProjectsPage from './pages/ProjectsPage'
 import ProjectDetailPage from './pages/ProjectDetailPage'
-import { theme } from './theme'
 
-export default function App() {
+function App() {
   return (
-    <div
-      style={{
-        maxWidth: 900,
-        margin: '32px auto',
-        border: `3px solid ${theme.color.woodDark}`,
-        outline: `2px solid ${theme.color.woodLight}`,
-        outlineOffset: '-6px',
-        borderRadius: 10,
-        overflow: 'hidden',
-        boxShadow: theme.pixelShadow(6),
-      }}
-    >
+    <>
       <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/projects/:slug" element={<ProjectDetailPage />} />
       </Routes>
-    </div>
+    </>
   )
 }
+
+export default App
